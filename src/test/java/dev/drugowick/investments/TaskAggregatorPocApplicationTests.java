@@ -1,4 +1,4 @@
-package dev.drugowick.taskaggregatorpoc;
+package dev.drugowick.investments;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

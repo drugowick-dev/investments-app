@@ -1,23 +1,41 @@
-<div th:fragment="top-navbar">
+<div th:fragment="top-navbar (username)" xmlns:th="http://www.thymeleaf.org">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="#">Investments</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="/">Boilerplate Application</a>
-
-        <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">Home Page</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/another-page">Other Page</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Investments</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        More...
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Deposits</a>
+                    </div>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+        </div>
+        <div id="logout" class="float-right">
+            <div class="btn-group">
+                <!--/*@thymesVar id="username" type="java.lang.String"*/-->
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${username}">
+                    Username
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <form action="/logout">
+                        <button class="dropdown-item button-link">Logout</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </nav>
 </div>

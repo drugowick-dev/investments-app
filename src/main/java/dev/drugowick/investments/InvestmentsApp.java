@@ -1,13 +1,13 @@
-package dev.drugowick.taskaggregatorpoc;
+package dev.drugowick.investments;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TaskAggregatorPocApplication {
+public class InvestmentsApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(TaskAggregatorPocApplication.class, args);
+        SpringApplication.run(InvestmentsApp.class, args);
     }
 
 }

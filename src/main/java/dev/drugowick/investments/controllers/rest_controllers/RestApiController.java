@@ -1,4 +1,4 @@
-package dev.drugowick.taskaggregatorpoc.controllers.rest_controllers;
+package dev.drugowick.investments.controllers.rest_controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

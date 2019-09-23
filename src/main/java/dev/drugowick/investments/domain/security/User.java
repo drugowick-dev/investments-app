@@ -15,8 +15,8 @@ import javax.persistence.Id;
 @ToString
 public class User {
 
-    @Column(unique = true, nullable = false)
     @Id
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -24,4 +24,5 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled;
+
 }

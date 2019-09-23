@@ -1,6 +1,8 @@
 package dev.drugowick.investments.bootstrap;
 
 import dev.drugowick.investments.configuration.ScheduledTasks;
+import dev.drugowick.investments.services.ProfileService;
+import dev.drugowick.investments.services.dto.ProfileDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,9 +25,12 @@ public class DataLoader {
     private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
 
-    public DataLoader(UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
+    private final ProfileService profileService;
+
+    public DataLoader(UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder, ProfileService profileService) {
         this.userDetailsManager = userDetailsManager;
         this.passwordEncoder = passwordEncoder;
+        this.profileService = profileService;
     }
 
     public void loadData() {
@@ -39,6 +44,25 @@ public class DataLoader {
         userDetails = new User("user", passwordEncoder.encode("user"), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
         userDetailsManager.createUser(userDetails);
         log.info("Created user " + userDetails);
+
+        // Fake Profiles
+        ProfileDTO administratorProfile = new ProfileDTO(
+                1L,
+                "Administrador",
+                "administrador@investmentsapp.com",
+                "I'm an administrator.",
+                "admin");
+        profileService.save(administratorProfile);
+        log.info("Created profile " + administratorProfile);
+
+        ProfileDTO userProfile = new ProfileDTO(
+                2L,
+                "User",
+                "administrador@investmentsapp.com",
+                "I'm an administrator.",
+                "user");
+        profileService.save(userProfile);
+        log.info("Created profile " + userProfile);
 
     }
 

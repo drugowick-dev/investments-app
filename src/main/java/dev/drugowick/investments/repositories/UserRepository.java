@@ -1,6 +1,6 @@
 package dev.drugowick.investments.repositories;
 
-import dev.drugowick.investments.domain.Profile;
+import dev.drugowick.investments.domain.security.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  * Spring Data repository for the Profile entity.
  */
 @Repository
-public interface ProfileRepository extends JpaRepository<Profile, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
 
 }

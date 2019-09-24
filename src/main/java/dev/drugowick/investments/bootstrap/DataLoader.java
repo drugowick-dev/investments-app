@@ -1,18 +1,11 @@
 package dev.drugowick.investments.bootstrap;
 
 import dev.drugowick.investments.configuration.ScheduledTasks;
-import dev.drugowick.investments.services.ProfileService;
-import dev.drugowick.investments.services.dto.ProfileDTO;
+import dev.drugowick.investments.services.UserService;
+import dev.drugowick.investments.services.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
 
 /**
  * This is a Data Loader, responsible for creating new data on the database.
@@ -22,15 +15,10 @@ public class DataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-    private final UserDetailsManager userDetailsManager;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    private final ProfileService profileService;
-
-    public DataLoader(UserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder, ProfileService profileService) {
-        this.userDetailsManager = userDetailsManager;
-        this.passwordEncoder = passwordEncoder;
-        this.profileService = profileService;
+    public DataLoader(UserService userService) {
+        this.userService = userService;
     }
 
     public void loadData() {
@@ -38,32 +26,27 @@ public class DataLoader {
         cleanUpDatabase();
 
         // Fake Users
-        UserDetails userDetails = new User("admin", passwordEncoder.encode("admin"), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-        userDetailsManager.createUser(userDetails);
-        log.info("Created user " + userDetails);
-        userDetails = new User("user", passwordEncoder.encode("user"), Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
-        userDetailsManager.createUser(userDetails);
-        log.info("Created user " + userDetails);
-
-        // Fake Profiles
-        ProfileDTO administratorProfile = new ProfileDTO(
-                1L,
-                "Administrador",
-                "administrador@investmentsapp.com",
-                "I'm an administrator.",
-                "admin");
-        profileService.save(administratorProfile);
-        log.info("Created profile " + administratorProfile);
-
-        ProfileDTO userProfile = new ProfileDTO(
-                2L,
+        UserDTO user = new UserDTO(
+                "user",
+                "user",
+                true,
                 "User",
-                "administrador@investmentsapp.com",
-                "I'm an administrator.",
-                "user");
-        profileService.save(userProfile);
-        log.info("Created profile " + userProfile);
+                "user@gmail.com",
+                "A simple user bio."
+        );
+        userService.save(user);
+        log.info("Created user " + user);
 
+        UserDTO admin = new UserDTO(
+                "admin",
+                "admin",
+                true,
+                "Admin",
+                "admin@gmail.com",
+                "A simple admin bio."
+        );
+        userService.save(admin);
+        log.info("Created user " + admin);
     }
 
     /**

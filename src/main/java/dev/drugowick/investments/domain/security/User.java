@@ -25,4 +25,10 @@ public class User {
     @Column(nullable = false)
     private boolean enabled;
 
+    private String fullName;
+
+    private String email;
+
+    private String bio;
+
 }

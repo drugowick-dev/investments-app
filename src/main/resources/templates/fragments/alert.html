@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*@thymesVar id="type" type="String"*/-->
+<div class="alert alert-dismissable" th:assert="${!#strings.isEmpty(type) and !#strings.isEmpty(message)}"
+     th:classappend="'alert-' + ${type}" th:fragment="alert (type, message)">
+    <button aria-hidden="true" class="close" data-dismiss="alert" type="button">&times;</button>
+    <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+    <span th:text="${message}">Test</span>
+</div>
+</body>
+</html>

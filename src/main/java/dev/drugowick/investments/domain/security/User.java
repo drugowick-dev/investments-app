@@ -12,11 +12,11 @@ import javax.persistence.Id;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"password"})
 public class User {
 
-    @Column(unique = true, nullable = false)
     @Id
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -24,4 +24,11 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled;
+
+    private String fullName;
+
+    private String email;
+
+    private String bio;
+
 }

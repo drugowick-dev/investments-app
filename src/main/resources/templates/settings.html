@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <!-- Bootstrap CSS -->
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          rel="stylesheet">
+
+    <title>Investments App</title>
+</head>
+<body>
+<!--/*@thymesVar id="username" type="java.security.String"*/-->
+<div th:replace="fragments/top-navbar :: top-navbar (${username})"></div>
+
+<main role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">Settings</h1>
+            <p>On this Settings page you can configure your information as well as everything related to your
+                experience on the Investments App.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+
+                <form method="post" th:object="${user}">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="fullName">Full name</label>
+                        <div class="col-sm-9">
+                            <input
+                                    class="form-control" id="fullName" placeholder="Your full name"
+                                    th:field="*{fullName}"
+                                    type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="email">Email address</label>
+                        <div class="col-sm-9">
+                            <input
+                                    class="form-control" id="email" placeholder="Your best email address"
+                                    th:field="*{email}"
+                                    type="email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="bio">Bio</label>
+                        <div class="col-sm-9">
+                            <textarea
+                                    class="form-control" id="bio" placeholder="Tell us a bit about yourself" rows="3"
+                                    th:field="*{bio}"
+                                    type="text"></textarea>
+
+                        </div>
+                    </div>
+                    <p>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="username">Username</label>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <button
+                                            class="btn btn-info" id="changeUsername" type="button">Edit Login Info
+                                    </button>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input
+                                            class="form-control" id="username" placeholder="Your username to log in"
+                                            readonly
+                                            th:field="${user.username}"
+                                            type="text">
+                                    <input th:field="${user.password}" type="hidden">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label" for="enabled">Enabled</label>
+                        <div class="col-sm-9">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons" id="enabled">
+                                <label class="btn btn-success">
+                                    <input
+                                            autocomplete="off"
+                                            id="option1"
+                                            name="options"
+                                            readonly
+                                            th:field="${user.enabled}"
+                                            th:text="${text}"
+                                            th:value="${user.enabled}"
+                                            th:with="text=${user.enabled}? 'Yes' : 'No'"
+                                            type="radio">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col float-right">
+                                <button class="btn btn-primary float-right" type="submit">Save Settings</button>
+                            </div>
+                        </div>
+                        <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+                        <div class="row" th:if="${message}">
+                            <div class="col">
+                                <br>
+                            </div>
+                        </div>
+                        <div class="row" th:if="${message}">
+                            <div class="col">
+                                <!--/*@thymesVar id="type" type="java.lang.String"*/-->
+                                <div th:replace="fragments/alert :: alert (type=${type}, message=${message})">...</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr>
+
+    </div> <!-- /container -->
+
+</main>
+
+<footer class="container">
+    <p>&copy; Drugowick.dev 2019</p>
+</footer>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

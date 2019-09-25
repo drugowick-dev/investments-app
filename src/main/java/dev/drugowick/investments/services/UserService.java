@@ -44,13 +44,21 @@ public class UserService {
      */
     public UserDTO save(UserDTO userDto) {
         log.debug("Request to save User : {}", userDto);
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 userDto.getUsername(),
-                passwordEncoder.encode(userDto.getPassword()),
+                userDto.getPassword(),
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
         );
-        userDetailsManager.createUser(userDetails);
-        userDto.setPassword(userDetails.getPassword());
+        /**
+         * JPA repositories handles the creation or update through the `save` method,
+         * but the UserDetailsManager does not.
+         */
+        if (userDetailsManager.userExists(userDetails.getUsername()))
+            userDetailsManager.updateUser(userDetails);
+        else
+            userDetailsManager.createUser(userDetails);
+
         User user = userMapper.toEntity(userDto);
         user = userRepository.save(user);
         return userMapper.toDto(user);

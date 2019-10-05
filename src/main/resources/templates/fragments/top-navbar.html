@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="top-navbar (username)">
+<div th:fragment="top-navbar">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Investments</a>
         <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
@@ -26,12 +26,12 @@
                 </li>
             </ul>
         </div>
-        <div class="float-right" id="logout">
+        <!--/*@thymesVar id="username" type="java.lang.String"*/-->
+        <div class="float-right" id="user-menu" th:if="${#authentication.name} != null">
             <div class="btn-group">
-                <!--/*@thymesVar id="username" type="java.lang.String"*/-->
                 <button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-secondary dropdown-toggle"
-                        data-toggle="dropdown" th:text="${username}" type="button">
-                    Username
+                        data-toggle="dropdown" type="button">
+                    <span th:text="${#authentication.name}"></span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="/settings">Settings</a>

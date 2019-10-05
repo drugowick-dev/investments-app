@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Optional;
 
 @Controller
 public class SettingsController {
@@ -24,16 +23,16 @@ public class SettingsController {
 
     @GetMapping({"/settings"})
     public String settingsPage(Principal principal, Model model) {
-        /**
-         * `username` is used on the menu at the top.
-         */
-        model.addAttribute("username", principal.getName());
-        Optional<UserDTO> optionalUser = userService.findOne(principal.getName());
-        if (optionalUser.isPresent()) {
-            model.addAttribute("user", optionalUser.get());
-        } else {
-            throw new RuntimeException("Profile not found.");
-        }
+//        /**
+//         * `username` is used on the menu at the top.
+//         */
+//        model.addAttribute("username", principal.getName());
+//        Optional<UserDTO> optionalUser = userService.findOne(principal.getName());
+//        if (optionalUser.isPresent()) {
+//            model.addAttribute("user", optionalUser.get());
+//        } else {
+//            throw new RuntimeException("Profile not found.");
+//        }
         return "settings";
     }
 
@@ -44,14 +43,14 @@ public class SettingsController {
             BindingResult result,
             RedirectAttributes redirectAttributes) {
 
-        redirectAttributes.addFlashAttribute("message", "Error saving settings.");
-        redirectAttributes.addFlashAttribute("type", "danger");
-        if (result.hasErrors())
-            return "redirect:/settings";
-
-        userService.save(userDTO);
-        redirectAttributes.addFlashAttribute("message", "Settings successfully saved.");
-        redirectAttributes.addFlashAttribute("type", "success");
+//        redirectAttributes.addFlashAttribute("message", "Error saving settings.");
+//        redirectAttributes.addFlashAttribute("type", "danger");
+//        if (result.hasErrors())
+//            return "redirect:/settings";
+//
+//        userService.save(userDTO);
+//        redirectAttributes.addFlashAttribute("message", "Settings successfully saved.");
+//        redirectAttributes.addFlashAttribute("type", "success");
         return "redirect:/settings";
     }
 }

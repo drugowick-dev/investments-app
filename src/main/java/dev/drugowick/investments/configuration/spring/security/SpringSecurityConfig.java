@@ -1,7 +1,9 @@
 package dev.drugowick.investments.configuration.spring.security;
 
+import dev.drugowick.investments.services.CustomUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +19,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${dev.drugowick.investments.devmode.password:#{'xibanga'}}")
     private String devPass;
+
+    @Autowired
+    private final CustomUserService customUserService;
+
+    public SpringSecurityConfig(CustomUserService customUserService) {
+        this.customUserService = customUserService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -45,6 +54,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/login**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login();
+                .oauth2Login()
+                .userInfoEndpoint().userService(this.oauth2UserService());
+    }
+
+    private CustomUserService oauth2UserService() {
+        return this.customUserService;
     }
 }

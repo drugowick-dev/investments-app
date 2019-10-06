@@ -12,15 +12,15 @@ class UserMapperTest {
 
     @BeforeAll
     static void setUp() {
-        user_global = new User(
-                "brunodrugowick",
-                "123",
-                true,
-                null,
-                null,
-                null);
-
-        userDto_global = UserMapper.INSTANCE.toDto(user_global);
+//        user_global = new User(
+//                "brunodrugowick",
+//                "123",
+//                true,
+//                null,
+//                null,
+//                null);
+//
+//        userDto_global = UserMapper.INSTANCE.toDto(user_global);
     }
 
     @Test

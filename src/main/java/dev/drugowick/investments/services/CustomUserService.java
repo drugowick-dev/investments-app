@@ -7,6 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +19,14 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class UserService {
+public class CustomUserService implements OAuth2UserService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final Logger log = LoggerFactory.getLogger(CustomUserService.class);
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public CustomUserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
@@ -93,4 +98,18 @@ public class UserService {
 //        userRepository.deleteById(username);
     }
 
+    /**
+     * For now this CustomUserService uses the DeafaultUserService to provide the OAuthUser.
+     * <p>
+     * This is an entry point to customize the UserService when logging via OAuth2/OIDC.
+     *
+     * @param userRequest
+     * @return an OAuth2User
+     * @throws OAuth2AuthenticationException
+     */
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        DefaultOAuth2UserService defaultUserService = new DefaultOAuth2UserService();
+        return defaultUserService.loadUser(userRequest);
+    }
 }

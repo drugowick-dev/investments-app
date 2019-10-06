@@ -1,6 +1,6 @@
 package dev.drugowick.investments.controllers.page_controllers;
 
-import dev.drugowick.investments.services.UserService;
+import dev.drugowick.investments.services.CustomUserService;
 import dev.drugowick.investments.services.dto.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +15,9 @@ import java.security.Principal;
 @Controller
 public class SettingsController {
 
-    private final UserService userService;
+    private final CustomUserService userService;
 
-    public SettingsController(UserService userService) {
+    public SettingsController(CustomUserService userService) {
         this.userService = userService;
     }
 

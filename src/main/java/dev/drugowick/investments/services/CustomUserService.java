@@ -1,5 +1,6 @@
 package dev.drugowick.investments.services;
 
+import dev.drugowick.investments.domain.security.User;
 import dev.drugowick.investments.repositories.UserRepository;
 import dev.drugowick.investments.services.dto.UserDTO;
 import dev.drugowick.investments.services.mapper.UserMapper;
@@ -38,26 +39,16 @@ public class CustomUserService implements OAuth2UserService {
      * @return the saved entity.
      */
     public UserDTO save(UserDTO userDto) {
-        return new UserDTO();
-//        log.debug("Request to save User : {}", userDto);
-//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-//        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-//                userDto.getUsername(),
-//                userDto.getPassword(),
-//                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
-//        );
-//        /**
-//         * JPA repositories handles the creation or update through the `save` method,
-//         * but the UserDetailsManager does not.
-//         */
-////        if (userDetailsManager.userExists(userDetails.getUsername()))
-////            userDetailsManager.updateUser(userDetails);
-////        else
-////            userDetailsManager.createUser(userDetails);
-//
-//        User user = userMapper.toEntity(userDto);
-//        user = userRepository.save(user);
-//        return userMapper.toDto(user);
+        log.debug("Request to save User : {}", userDto);
+
+        /**
+         * JPA repositories handles the creation or update through the `save` method,
+         * but the UserDetailsManager does not.
+         */
+
+        User user = userMapper.toEntity(userDto);
+        user = userRepository.save(user);
+        return userMapper.toDto(user);
     }
 
     /**
@@ -99,7 +90,7 @@ public class CustomUserService implements OAuth2UserService {
     }
 
     /**
-     * For now this CustomUserService uses the DeafaultUserService to provide the OAuthUser.
+     * For now this CustomUserService uses the DefaultUserService to provide the OAuthUser.
      * <p>
      * This is an entry point to customize the UserService when logging via OAuth2/OIDC.
      *
@@ -110,6 +101,24 @@ public class CustomUserService implements OAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         DefaultOAuth2UserService defaultUserService = new DefaultOAuth2UserService();
-        return defaultUserService.loadUser(userRequest);
+        OAuth2User oAuth2User = defaultUserService.loadUser(userRequest);
+        this.save(this.toDto(oAuth2User, userRequest.getClientRegistration().getClientName()));
+        return oAuth2User;
+    }
+
+    private UserDTO toDto(OAuth2User oAuth2User, String clientId) {
+        UserDTO userDTO = new UserDTO();
+        if (clientId.equals("GitHub")) {
+            userDTO.setBio((oAuth2User.getAttributes().get("bio").toString()));
+            userDTO.setEmail(oAuth2User.getAttributes().get("email").toString());
+            userDTO.setEnabled(true);
+            userDTO.setFullName(oAuth2User.getAttributes().get("name").toString());
+//        } else if (clientId.equals("Google")) {
+//            userDTO.setBio((oAuth2User.getAttributes().get("bio").toString()));
+//            userDTO.setEmail(oAuth2User.getAttributes().get("email").toString());
+//            userDTO.setEnabled(true);
+//            userDTO.setFullName(oAuth2User.getAttributes().get("name").toString());
+        }
+        return userDTO;
     }
 }

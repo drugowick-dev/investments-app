@@ -2,9 +2,7 @@ package dev.drugowick.investments.domain.security;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "Users")
 @Getter
@@ -16,11 +14,9 @@ import javax.persistence.Id;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
+    private Long id;
 
     @Column(nullable = false)
     private boolean enabled;

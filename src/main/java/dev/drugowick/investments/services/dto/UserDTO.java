@@ -1,6 +1,9 @@
 package dev.drugowick.investments.services.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 
@@ -14,11 +17,9 @@ import javax.validation.constraints.Email;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"password"})
 public class UserDTO {
 
-    private String username;
-    private String password;
+    private Long id;
     private boolean enabled;
     private String fullName;
 

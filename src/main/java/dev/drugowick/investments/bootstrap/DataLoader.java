@@ -1,7 +1,7 @@
 package dev.drugowick.investments.bootstrap;
 
 import dev.drugowick.investments.configuration.ScheduledTasks;
-import dev.drugowick.investments.services.CustomUserService;
+import dev.drugowick.investments.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,9 +14,9 @@ public class DataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-    private final CustomUserService userService;
+    private final UserService userService;
 
-    public DataLoader(CustomUserService userService) {
+    public DataLoader(UserService userService) {
         this.userService = userService;
     }
 

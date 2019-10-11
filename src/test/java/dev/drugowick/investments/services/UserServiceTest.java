@@ -2,7 +2,7 @@ package dev.drugowick.investments.services;
 
 import org.junit.jupiter.api.Test;
 
-class CustomUserServiceTest {
+class UserServiceTest {
 
     @Test
     void save() {

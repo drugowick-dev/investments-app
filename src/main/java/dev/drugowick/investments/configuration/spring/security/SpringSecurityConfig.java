@@ -1,13 +1,12 @@
 package dev.drugowick.investments.configuration.spring.security;
 
-import dev.drugowick.investments.services.CustomUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -20,11 +19,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${dev.drugowick.investments.devmode.password:#{'xibanga'}}")
     private String devPass;
 
-    @Autowired
-    private final CustomUserService customUserService;
+    private CustomSuccessHandler customSuccessHandler;
 
-    public SpringSecurityConfig(CustomUserService customUserService) {
-        this.customUserService = customUserService;
+    public SpringSecurityConfig(CustomSuccessHandler customSuccessHandler) {
+        this.customSuccessHandler = customSuccessHandler;
     }
 
     @Override
@@ -55,10 +53,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
-                .userInfoEndpoint().userService(this.oauth2UserService());
+                .successHandler(this.successHandler());
     }
 
-    private CustomUserService oauth2UserService() {
-        return this.customUserService;
+    private AuthenticationSuccessHandler successHandler() {
+        log.info("Setting custom success handler to " + this.customSuccessHandler.getClass());
+        return this.customSuccessHandler;
     }
 }

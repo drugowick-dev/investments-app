@@ -62,26 +62,6 @@
                     </div>
                     <p>
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label" for="username">Username</label>
-                        <div class="col-sm-9">
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <button
-                                            class="btn btn-info" id="changeUsername" type="button">Edit Login Info
-                                    </button>
-                                </div>
-                                <div class="col-sm-9">
-                                    <input
-                                            class="form-control" id="username" placeholder="Your username to log in"
-                                            readonly
-                                            th:field="${user.username}"
-                                            type="text">
-                                    <input th:field="${user.password}" type="hidden">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-3 col-form-label" for="enabled">Enabled</label>
                         <div class="col-sm-9">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons" id="enabled">
@@ -119,6 +99,8 @@
                             </div>
                         </div>
                     </div>
+                    <input th:field="${user.provider}" type="hidden">
+                    <input th:field="${user.providerId}" type="hidden">
                 </form>
             </div>
         </div>

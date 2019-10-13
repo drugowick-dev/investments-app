@@ -38,7 +38,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
         String userEmail = getUserEmail(clientId, oAuthUser);
         Optional<UserDTO> optionalUserDTO = userService.findOne(userEmail);
-        if (optionalUserDTO.isEmpty()) {
+        if (!optionalUserDTO.isPresent()) {
             log.info("Creating new user " + userEmail);
             userService.save(newUserDTO(
                     clientId,

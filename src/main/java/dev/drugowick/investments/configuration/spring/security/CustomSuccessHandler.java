@@ -19,8 +19,8 @@ import java.util.Optional;
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
-    public static final String GITHUB_CLIENTID = "github";
-    public static final String GOOGLE_CLIENTID = "google";
+    private static final String GITHUB_CLIENTID = "github";
+    private static final String GOOGLE_CLIENTID = "google";
     private static final Logger log = LoggerFactory.getLogger(SpringSecurityConfig.class);
     private final UserService userService;
 

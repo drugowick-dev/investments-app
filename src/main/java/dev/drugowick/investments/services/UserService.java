@@ -53,13 +53,13 @@ public class UserService {
     /**
      * Find one specific User
      *
-     * @param username the id of the User to find
+     * @param email the id of the User to find
      * @return the User DTO if found
      */
     @Transactional(readOnly = true)
-    public Optional<UserDTO> findOne(String username) {
-        log.debug("Request to get User : {}", username);
-        return userRepository.findById(username)
+    public Optional<UserDTO> findOne(String email) {
+        log.debug("Request to get User : {}", email);
+        return userRepository.findById(email)
                 .map(userMapper::toDto);
     }
 

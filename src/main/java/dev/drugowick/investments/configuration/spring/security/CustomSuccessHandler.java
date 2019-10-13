@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
@@ -29,33 +30,60 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-        log.debug("Successfully authenticated via OAuth with provider ");
+
         String clientId = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
-        OAuth2User user = (OAuth2User) authentication.getPrincipal();
-        userService.save(getUserDTO(clientId, user));
+        OAuth2User oAuthUser = (OAuth2User) authentication.getPrincipal();
+
+        log.info("Successfully authenticated via OAuth with provider " + clientId);
+
+        String userEmail = getUserEmail(clientId, oAuthUser);
+        Optional<UserDTO> optionalUserDTO = userService.findOne(userEmail);
+        if (optionalUserDTO.isEmpty()) {
+            log.info("Creating new user " + userEmail);
+            userService.save(newUserDTO(
+                    clientId,
+                    oAuthUser));
+        } else {
+            /**
+             * Provider information gets overwritten based on user email.
+             * TODO provide a better implementation, linking the User account with several providers.
+             */
+            log.info("Updating user provider information " + userEmail);
+            UserDTO userDTOToUpdate = optionalUserDTO.get();
+            userDTOToUpdate.setProvider(clientId);
+            userDTOToUpdate.setProviderId(oAuthUser.getName());
+
+            userService.save(userDTOToUpdate);
+        }
+
+        /**
+         * https://docs.spring.io/spring-security/site/docs/5.1.6.RELEASE/api/org/springframework/security/web/authentication/AuthenticationSuccessHandler.html
+         */
+        httpServletResponse.sendRedirect("/");
     }
 
-    private UserDTO getUserDTO(String clientId, OAuth2User user) {
+    private String getUserEmail(String clientId, OAuth2User user) {
+        String userEmail = null;
+        if (clientId.equals(GOOGLE_CLIENTID) || clientId.equals(GITHUB_CLIENTID)) {
+            userEmail = user.getAttributes().get("email").toString();
+        }
+
+        return userEmail;
+    }
+
+    private UserDTO newUserDTO(String clientId, OAuth2User user) {
         UserDTO userDTO = null;
-        if (clientId.equals(GOOGLE_CLIENTID)) {
+        if (clientId.equals(GOOGLE_CLIENTID) || clientId.equals(GITHUB_CLIENTID)) {
             userDTO = new UserDTO().builder()
                     .email(user.getAttributes().get("email").toString())
                     .bio(user.getAttributes().getOrDefault("bio", "").toString())
                     .enabled(true)
                     .fullName(user.getAttributes().get("name").toString())
-                    .provider(GOOGLE_CLIENTID)
-                    .providerId(user.getName())
-                    .build();
-        } else if (clientId.equals(GITHUB_CLIENTID)) {
-            userDTO = new UserDTO().builder()
-                    .email(user.getAttributes().get("email").toString())
-                    .bio(user.getAttributes().getOrDefault("bio", "").toString())
-                    .enabled(true)
-                    .fullName(user.getAttributes().get("name").toString())
-                    .provider(GITHUB_CLIENTID)
+                    .provider(clientId)
                     .providerId(user.getName())
                     .build();
         }
+
         return userDTO;
     }
 }

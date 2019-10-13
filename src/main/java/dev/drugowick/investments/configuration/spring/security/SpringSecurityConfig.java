@@ -19,6 +19,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${dev.drugowick.investments.devmode.password:#{'xibanga'}}")
     private String devPass;
 
+    @Value("${dev.drugowick.investments.security.disable.csrf:#{'false'}}")
+    private boolean disableCsrf;
+
     private CustomSuccessHandler customSuccessHandler;
 
     public SpringSecurityConfig(CustomSuccessHandler customSuccessHandler) {
@@ -42,6 +45,16 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
 
+        /**
+         * Disabling CSRF for Heroku as per
+         * https://stackoverflow.com/questions/50486314/how-to-solve-403-error-in-spring-boot-post-request
+         *
+         * TODO investigate this behaviour and correct fix. This doesn't look like a fix, more like a workaround.
+         */
+        if (disableCsrf) {
+            log.info("WARNING: Disabling CSRF. For some reason that works on Heroku but I don't think this is correct.");
+            http.csrf().disable();
+        }
 
         /**
          * This simple configuration grants access only to the home page for non-authenticated users.

@@ -2,7 +2,6 @@ package dev.drugowick.investments.bootstrap;
 
 import dev.drugowick.investments.configuration.ScheduledTasks;
 import dev.drugowick.investments.services.UserService;
-import dev.drugowick.investments.services.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,27 +25,27 @@ public class DataLoader {
         cleanUpDatabase();
 
         // Fake Users
-        UserDTO user = new UserDTO(
-                "user",
-                "user",
-                true,
-                "User",
-                "user@gmail.com",
-                "A simple user bio."
-        );
-        userService.save(user);
-        log.info("Created user " + user);
-
-        UserDTO admin = new UserDTO(
-                "admin",
-                "admin",
-                true,
-                "Admin",
-                "admin@gmail.com",
-                "A simple admin bio."
-        );
-        userService.save(admin);
-        log.info("Created user " + admin);
+//        UserDTO user = new UserDTO(
+//                "user",
+//                "user",
+//                true,
+//                "User",
+//                "user@gmail.com",
+//                "A simple user bio."
+//        );
+//        userService.save(user);
+//        log.info("Created user " + user);
+//
+//        UserDTO admin = new UserDTO(
+//                "admin",
+//                "admin",
+//                true,
+//                "Admin",
+//                "admin@gmail.com",
+//                "A simple admin bio."
+//        );
+//        userService.save(admin);
+//        log.info("Created user " + admin);
     }
 
     /**

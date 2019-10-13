@@ -2,6 +2,7 @@ package dev.drugowick.investments.controllers.page_controllers;
 
 import dev.drugowick.investments.services.UserService;
 import dev.drugowick.investments.services.dto.UserDTO;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,11 +25,11 @@ public class SettingsController {
 
     @GetMapping({"/settings"})
     public String settingsPage(Principal principal, Model model) {
-        /**
-         * `username` is used on the menu at the top.
-         */
-        model.addAttribute("username", principal.getName());
-        Optional<UserDTO> optionalUser = userService.findOne(principal.getName());
+        Optional<UserDTO> optionalUser =
+                userService.findByProviderAndProviderId(
+                        ((OAuth2AuthenticationToken) principal).getAuthorizedClientRegistrationId(),
+                        principal.getName());
+
         if (optionalUser.isPresent()) {
             model.addAttribute("user", optionalUser.get());
         } else {

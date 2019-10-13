@@ -2,31 +2,29 @@ package dev.drugowick.investments.domain.security;
 
 import lombok.*;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
-@Entity(name = "Users")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"password"})
+@Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"providerId"}))
 public class User {
 
-    @Id
-    @Column(unique = true, nullable = false)
-    private String username;
+    private String providerId;
 
-    @Column(nullable = false)
-    private String password;
+    private String provider;
 
-    @Column(nullable = false)
     private boolean enabled;
 
     private String fullName;
 
+    @Id
     private String email;
 
     private String bio;

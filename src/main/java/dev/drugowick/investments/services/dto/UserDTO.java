@@ -12,13 +12,13 @@ import javax.validation.constraints.Email;
  */
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"password"})
 public class UserDTO {
 
-    private String username;
-    private String password;
+    private String providerId;
+    private String provider;
     private boolean enabled;
     private String fullName;
 
